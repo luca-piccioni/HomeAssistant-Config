@@ -1,0 +1,8 @@
+
+# Directories and various
+.storage
+.cloud
+tts/*
+
+secrets.yaml
+known_devices.yaml

@@ -1,0 +1,25 @@
+
+- platform: cert_expiry
+  host: !secret http_hostname
+  name: Home Assistant SSL Certificate
+
+- platform: openweathermap
+  api_key: !secret openweather_api_key
+  monitored_conditions:
+    - temperature
+    - humidity
+    - pressure
+    - rain
+
+- platform: mqtt
+  name: Shelly Tapparella Bagno - Temperatura
+  state_topic: "shellies/shellyswitch25-693395/temperature"
+- platform: mqtt
+  name: Shelly Tapparella Bagno - Potenza
+  state_topic: "shellies/shellyswitch25-693395/roller/0/power"
+- platform: mqtt
+  name: Shelly Tapparella Bagno - Energia
+  state_topic: "shellies/shellyswitch25-693395/roller/0/energy"
+- platform: mqtt
+  name: Shelly Tapparella Bagno - Surriscaldamento
+  state_topic: "shellies/shellyswitch25-693395/overtemperature"

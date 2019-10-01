@@ -1,0 +1,45 @@
+resources:
+  - url: /local/mini-graph-card-bundle.js?v=0.5.0
+    type: module
+  - url: www/community/mini-media-player/mini-media-player-bundle.js?v=1.2.2
+    type: module
+
+title: Home
+views:
+  - badges:
+      - person.luca
+      - person.martina
+      - device_tracker.luca_experiaz5
+      - device_tracker.luca_samsungs4
+      - device_tracker.martina_lgn90
+      - sun.sun
+    cards:
+      - aspect_ratio: '1:1'
+        dark_mode: false
+        default_zoom: 16
+        entities:
+          - entity: device_tracker.luca_experiaz5
+        title: Family
+        type: map
+      - entity: weather.home
+        type: weather-forecast
+    path: default_view
+    title: Home
+  - badges: []
+    cards:
+      - entity: media_player.kodi
+        type: media-control
+      - entity: media_player.soggiorno
+        type: media-control
+      - entity: media_player.home
+        type: media-control
+    path: media
+    title: Media
+  - badges: []
+    cards:
+      - entity: sensor.home_assistant_ssl_certificate
+        name: HA SSL Certificate
+        type: sensor
+    path: network
+    title: Network
+

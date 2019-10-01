@@ -1,0 +1,84 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+frontend:
+  javascript_version: lastest
+
+#lovelace:
+#  mode: yaml
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+zone: !include zones.yaml
+automation: !include automations.yaml
+sensor: !include sensors.yaml
+script: !include scripts.yaml
+cover: !include covers.yaml
+
+homeassistant:
+  auth_providers:
+    - type: legacy_api_password
+      api_password: !secret http_password
+
+hacs:
+  token: !secret github_hacs_token
+
+http:
+  base_url: !secret http_url
+  ssl_certificate: !secret http_ssl_certificate
+  ssl_key: !secret http_ssl_key
+
+google_assistant:
+  project_id: !secret google_project_id
+  api_key: !secret google_api_key
+  exposed_domains:
+    - switch
+    - light
+  entity_config:
+    switch.kitchen:
+      name: CUSTOM_NAME_FOR_GOOGLE_ASSISTANT
+      aliases:
+        - BRIGHT_LIGHTS
+        - ENTRY_LIGHTS
+    light.living_room:
+      expose: false
+      room: LIVING_ROOM
+    group.all_automations:
+      expose: false
+
+media_player:
+  - platform: kodi
+    host: 127.0.0.1
+
+owntracks:
+mqtt:
+  broker: 127.0.0.1
+  username: !secret mosquitto_username
+  password: !secret mosquitto_password
+
+transmission:
+  host: 127.0.0.1
+  name: Transmission Deamon
+  username: !secret transmission_username
+  password: !secret transmission_password
+  turtle_mode: true
+
+device_tracker:
+  - platform: mqtt
+    devices:
+      experiaz5: 'owntracks/homeassistant/xperiaz5'
+  - platform: ping
+    hosts:
+      wii: 192.168.1.6
+      experiaz5: 192.168.1.55
+      samsungs4: 192.168.1.56
+      lg70: 192.168.1.57
+
+# warning, debug
+logger:
+  default: warning
+  logs:
+    homeassistant.components.mqtt: warning

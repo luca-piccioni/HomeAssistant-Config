@@ -1,0 +1,122 @@
+
+# Template Shelly MQTT
+#cover:
+#  - platform: mqtt
+#    name: tapparella_bagno
+#    availability_topic: "shellies/shellyswitch25-693395/online"
+#    payload_available: "true"
+#    payload_not_available: "false"
+#    state_topic: "shellies/shellyswitcth25-693395/roller/0"
+#    state_open: "open"
+#    state_closed: "close"
+#    state_stop: "stop"
+#    command_topic: "shellies/shellyswitch25-693395/roller/0/command"
+#    payload_open: "open"
+#    payload_close: "close"
+#    payload_stop: "stop"
+#    position_topic: "shellies/shellyswitch25-693395/roller/0/pos"
+#    set_position_topic: "shellies/shellyswitch25-693395/roller/0/command/pos"
+#    position_open: 0
+#    position_closed: 100
+#    qos: 0
+#    retain: false
+#    optimistic: false
+
+- platform: mqtt
+  name: "Tapparella Bagno"
+  availability_topic: "shellies/shellyswitch25-693395/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitcth25-693395/roller/0"
+  command_topic: "shellies/shellyswitch25-693395/roller/0/command"
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  position_topic: "shellies/shellyswitch25-693395/roller/0/pos"
+  set_position_topic: "shellies/shellyswitch25-693395/roller/0/command/pos"
+  qos: 0
+  retain: false
+  optimistic: false
+
+- platform: mqtt
+  name: "Tapparella Sala (Grande)"
+  availability_topic: "shellies/shellyswitch25-123456/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitcth25-123456/roller/0"
+  command_topic: "shellies/shellyswitch25-123456/roller/0/command"
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  position_topic: "shellies/shellyswitch25-123456/roller/0/pos"
+  set_position_topic: "shellies/shellyswitch25-123456/roller/0/command/pos"
+  qos: 0
+  retain: false
+  optimistic: false
+
+
+- platform: mqtt
+  name: "Tapparella Sala (Piccola)"
+  availability_topic: "shellies/shellyswitch25-123456/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitcth25-123456/roller/0"
+  command_topic: "shellies/shellyswitch25-123456/roller/0/command"
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  position_topic: "shellies/shellyswitch25-123456/roller/0/pos"
+  set_position_topic: "shellies/shellyswitch25-123456/roller/0/command/pos"
+  qos: 0
+  retain: false
+  optimistic: false
+
+- platform: mqtt
+  name: "Tapparella Cucina"
+  availability_topic: "shellies/shellyswitch25-69310A/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitcth25-69310A/roller/0"
+  command_topic: "shellies/shellyswitch25-69310A/roller/0/command"
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  position_topic: "shellies/shellyswitch25-69310A/roller/0/pos"
+  set_position_topic: "shellies/shellyswitch25-69310A/roller/0/command/pos"
+  qos: 0
+  retain: false
+  optimistic: false
+
+- platform: mqtt
+  name: "Camera"
+  availability_topic: "shellies/shellyswitch25-123456/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitcth25-123456/roller/0"
+  command_topic: "shellies/shellyswitch25-123456/roller/0/command"
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  position_topic: "shellies/shellyswitch25-123456/roller/0/pos"
+  set_position_topic: "shellies/shellyswitch25-123456/roller/0/command/pos"
+  qos: 0
+  retain: false
+  optimistic: false
+
+- platform: mqtt
+  name: "Camera Samuele"
+  availability_topic: "shellies/shellyswitch25-123456/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitcth25-123456/roller/0"
+  command_topic: "shellies/shellyswitch25-123456/roller/0/command"
+  payload_open: "open"
+  payload_close: "close"
+  payload_stop: "stop"
+  position_topic: "shellies/shellyswitch25-123456/roller/0/pos"
+  set_position_topic: "shellies/shellyswitch25-123456/roller/0/command/pos"
+  qos: 0
+  retain: false
+  optimistic: false
+
+

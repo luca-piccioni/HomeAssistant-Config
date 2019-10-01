@@ -1,0 +1,70 @@
+
+# Media volumes
+
+- alias: 'Nominal Google Home'
+  trigger:
+     platform: time
+     at: "07:30:00"
+  action:
+    service: media_player.volume_set
+    data:
+      volume_level: 0.6
+      entity_id:
+        - media_player.home
+
+- alias: 'Silent Google Home At Night'
+  trigger:
+     platform: time
+     at: "21:00:00"
+  action:
+    service: media_player.volume_set
+    data:
+      volume_level: 0.3
+      entity_id:
+        - media_player.home
+
+# Covers
+
+# Updates states after restart
+- alias: 'Sheelies Synch at HA startup'
+  trigger:
+  - platform: homeassistant
+    event: start
+  action:
+  - delay: 00:00:20
+  - service: mqtt.publish
+    data:
+      topic: shellies/command
+      payload: announce
+
+# Open little before wake up
+- alias: 'Tapparelle Automatiche (Mattina Feriale)'
+  trigger:
+    - platform: time
+      at: '07:12:30'
+  condition:
+    - condition: time
+      weekday:
+       - mon
+       - tue
+       - wed
+       - thu
+       - fri
+  action:
+    - service: cover.open_cover
+      entity_id: cover.tapparella_bagno
+    - service: cover.open_cover
+      entity_id: cover.tapparella_cucina
+
+# Close after sunset
+- alias: 'Tapparelle Automatiche (Notte)'
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: '01:00:00'
+  action:
+    - service: cover.close_cover
+      entity_id: cover.tapparella_bagno
+    - service: cover.close_cover
+      entity_id: cover.tapparella_cucina
+

@@ -1,0 +1,21 @@
+kitchen:
+  name: Cucina
+  entities:
+    - cover.tapparella_cucina
+bathroom:
+  name: Bagno
+  entities:
+    - cover.tapparella_bagno
+living_room:
+  name: Soggiorno
+  entities:
+    - device_tracker.wii
+    - media_player.home
+    - media_player.soggiorno
+bedroom_1:
+  name: !secret group_bedroom_1_name
+  entities:
+bedroom_2:
+  name: !secret group_bedroom_2_name
+  entities:
+
