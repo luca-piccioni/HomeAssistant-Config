@@ -1,6 +1,0 @@
-2019-10-01 22:41:37 WARNING (MainThread) [homeassistant.loader] You are using a custom integration for hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you do experience issues with Home Assistant.
-2019-10-01 22:41:37 WARNING (MainThread) [homeassistant.components.http.auth] legacy_api_password support has been enabled.
-2019-10-01 22:41:44 WARNING (MainThread) [homeassistant.components.mqtt] Data in your config entry is going to override your configuration.yaml: {'broker': '127.0.0.1', 'discovery': True, 'password': 'Too.Much.S3cur1ty!?', 'port': 1883, 'username': 'homeassistant'}
-2019-10-01 22:41:50 WARNING (MainThread) [homeassistant.setup] Setup of hacs is taking over 10 seconds.
-2019-10-01 23:14:08 ERROR (Thread-3) [pychromecast.socket_client] [Soggiorno:8009] Error reading from socket.
-2019-10-01 23:14:08 WARNING (Thread-3) [pychromecast.socket_client] [Soggiorno:8009] Error communicating with socket, resetting connection
