@@ -43,13 +43,9 @@
     - platform: time
       at: '07:12:30'
   condition:
-    - condition: time
-      weekday:
-       - mon
-       - tue
-       - wed
-       - thu
-       - fri
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
   action:
     - service: cover.open_cover
       entity_id: cover.tapparella_bagno
@@ -61,10 +57,17 @@
   trigger:
     - platform: sun
       event: sunset
-      offset: '01:00:00'
+      offset: '00:25:00'
   action:
     - service: cover.close_cover
       entity_id: cover.tapparella_bagno
     - service: cover.close_cover
       entity_id: cover.tapparella_cucina
-
+    - service: cover.close_cover
+      entity_id: cover.tapparella_camera
+    - service: cover.close_cover
+      entity_id: cover.tapparella_camera_samuele
+    - service: cover.close_cover
+      entity_id: cover.tapparella_sala_grande
+    - service: cover.close_cover
+      entity_id: cover.tapparella_sala_piccola

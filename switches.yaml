@@ -1,0 +1,14 @@
+
+- platform: mqtt
+  name: "Luce Sala"
+  availability_topic: "shellies/shellyswitch25-68732B/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitch25-68732B/relay/0"
+  command_topic: "shellies/shellyswitch25-68732B/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  qos: 0
+  retain: false
+  optimistic: false
+

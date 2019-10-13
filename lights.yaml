@@ -1,0 +1,4 @@
+
+- platform: switch
+  name: Luce Sala
+  entity_id: switch.luce_sala

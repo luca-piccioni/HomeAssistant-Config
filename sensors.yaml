@@ -12,6 +12,14 @@
     - rain
 
 - platform: mqtt
+  name: Luce Sala - Potenza
+  state_topic: "shellies/shellyswitch25-68732B/relay/0/power"
+- platform: mqtt
+  name: Luce Sala - Energia
+  state_topic: "shellies/shellyswitch25-68732B/relay/0/energy"
+
+
+- platform: mqtt
   name: Shelly Tapparella Bagno - Temperatura
   state_topic: "shellies/shellyswitch25-693395/temperature"
 - platform: mqtt

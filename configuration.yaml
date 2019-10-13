@@ -17,6 +17,12 @@ automation: !include automations.yaml
 sensor: !include sensors.yaml
 script: !include scripts.yaml
 cover: !include covers.yaml
+switch: !include switches.yaml
+light: !include lights.yaml
+
+binary_sensor:
+  - platform: workday
+    country: "IT"
 
 homeassistant:
   auth_providers:
@@ -37,6 +43,7 @@ google_assistant:
   exposed_domains:
     - switch
     - light
+    - cover
   entity_config:
     switch.kitchen:
       name: CUSTOM_NAME_FOR_GOOGLE_ASSISTANT
@@ -46,8 +53,6 @@ google_assistant:
     light.living_room:
       expose: false
       room: LIVING_ROOM
-    group.all_automations:
-      expose: false
 
 media_player:
   - platform: kodi
