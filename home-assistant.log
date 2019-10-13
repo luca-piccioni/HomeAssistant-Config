@@ -1338,3 +1338,6 @@ OSError: [Errno 113] No route to host
 2019-10-13 20:06:03 WARNING (MainThread) [homeassistant.components.mqtt.cover] Payload is not integer within range: -1
 2019-10-13 20:06:33 WARNING (MainThread) [homeassistant.components.mqtt.cover] Payload is not integer within range: -1
 2019-10-13 20:07:03 WARNING (MainThread) [homeassistant.components.mqtt.cover] Payload is not integer within range: -1
+2019-10-13 20:07:33 WARNING (MainThread) [homeassistant.components.mqtt.cover] Payload is not integer within range: -1
+2019-10-13 20:08:03 WARNING (MainThread) [homeassistant.components.mqtt.cover] Payload is not integer within range: -1
+2019-10-13 20:08:33 WARNING (MainThread) [homeassistant.components.mqtt.cover] Payload is not integer within range: -1
