@@ -103,7 +103,7 @@
   optimistic: false
 
 - platform: mqtt
-  name: "Tapparella Camera Samuele"
+  name: "Tapparella Cameretta"
   availability_topic: "shellies/shellyswitch25-69012F/online"
   payload_available: "true"
   payload_not_available: "false"

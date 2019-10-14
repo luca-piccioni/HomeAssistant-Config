@@ -25,6 +25,7 @@ binary_sensor:
     country: "IT"
 
 homeassistant:
+  customize: !include customize.yaml
   auth_providers:
     - type: legacy_api_password
       api_password: !secret http_password
@@ -81,6 +82,52 @@ device_tracker:
       experiaz5: 192.168.1.55
       samsungs4: 192.168.1.56
       lg70: 192.168.1.57
+
+utility_meter:
+  luce_sala_mensile:
+    source: sensor.luce_sala_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
+  tapparella_cucina_mensile:
+    source: sensor.tapparella_cucina_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
+  tapparella_sala_grande_mensile:
+    source: sensor.tapparella_sala_grande_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
+  tapparella_sala_piccola_mensile:
+    source: sensor.tapparella_sala_piccola_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
+  tapparella_camera_mensile:
+    source: sensor.tapparella_camera_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
+  tapparella_cameretta_mensile:
+    source: sensor.tapparella_cameretta_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
+  tapparella_bagno_mensile:
+    source: sensor.tapparella_bagno_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
+
+history:
+  include:
+    domains:
+      - cover
+      - light
+      - media_player
+      - sensor
+      - switch
 
 # warning, debug
 logger:

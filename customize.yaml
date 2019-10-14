@@ -1,0 +1,25 @@
+
+sensor.luce_sala_mensile_F0:
+  friendly_name: "Luce Sala Mensile"
+  unit_of_measurement: "KWh"
+
+sensor.tapparella_cucina_mensile_F0:
+  friendly_name: "Tapparella Cucina Mensile"
+  unit_of_measurement: "KWh"
+sensor.tapparella_sala_grande_mensile_F0:
+  friendly_name: "Tapparella Sala (Grande) Mensile"
+  unit_of_measurement: "KWh"
+sensor.tapparella_sala_piccola_mensile_F0:
+  friendly_name: "Tapparella Sala (Piccola) Mensile"
+  unit_of_measurement: "KWh"
+sensor.tapparella_camera_mensile_F0:
+  friendly_name: "Tapparella Camera Mensile"
+  unit_of_measurement: "KWh"
+sensor.tapparella_cameretta_mensile_F0:
+  friendly_name: "Tapparella Cameretta Mensile"
+  unit_of_measurement: "KWh"
+sensor.tapparella_bagno_mensile_F0:
+  friendly_name: "Tapparella Bagno Mensile"
+  unit_of_measurement: "KWh"
+
+
