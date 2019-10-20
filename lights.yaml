@@ -1,4 +1,16 @@
 
 - platform: switch
-  name: Luce Sala
+  name: "Luce Terrazzo"
+  entity_id: switch.luce_terrazzo
+
+- platform: switch
+  name: "Luce Ingresso"
+  entity_id: switch.luce_ingresso
+
+- platform: switch
+  name: "Luce Sala"
   entity_id: switch.luce_sala
+
+- platform: switch
+  name: "Luce Scala"
+  entity_id: switch.luce_scala

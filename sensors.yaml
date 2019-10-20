@@ -11,6 +11,20 @@
     - pressure
     - rain
 
+# 
+# Lights
+#
+# Note: energy is measured in W/min, indeed the energy is converted in KWh
+
+- platform: mqtt
+  name: "Luce Ingresso - Potenza"
+  unit_of_measurement: "W"
+  state_topic: "shellies/shellyswitch25-693DE8/relay/0/power"
+- platform: mqtt
+  name: "Luce Ingresso - Energia Wmin"
+  state_topic: "shellies/shellyswitch25-693DE8/relay/0/energy"
+  unit_of_measurement: "W/min"
+
 - platform: mqtt
   name: "Luce Sala - Potenza"
   unit_of_measurement: "W"
@@ -20,24 +34,49 @@
   state_topic: "shellies/shellyswitch25-68732B/relay/0/energy"
   unit_of_measurement: "W/min"
 
+- platform: mqtt
+  name: "Luce Scala - Potenza"
+  unit_of_measurement: "W"
+  state_topic: "shellies/shellyswitch25-693DE8/relay/1/power"
+- platform: mqtt
+  name: "Luce Scala - Energia Wmin"
+  state_topic: "shellies/shellyswitch25-693DE8/relay/1/energy"
+  unit_of_measurement: "W/min"
+
 - platform: template
   sensors:
+   luce_ingresso_energia_kwh:
+     friendly_name: Luce Ingresso - Energia KWh
+     unit_of_measurement: 'KWh'
+     value_template: "{{ states('sensor.luce_ingresso_energia_wmin') | float / 60000 }}"
    luce_sala_energia_kwh:
      friendly_name: Luce Sala - Energia KWh
      unit_of_measurement: 'KWh'
      value_template: "{{ states('sensor.luce_sala_energia_wmin') | float / 60000 }}"
+   luce_scala_energia_kwh:
+     friendly_name: Luce Scala - Energia KWh
+     unit_of_measurement: 'KWh'
+     value_template: "{{ states('sensor.luce_scala_energia_wmin') | float / 60000 }}"
    luci_potenza_w:
      friendly_name: Illuminazione - Potenza
      unit_of_measurement: 'W'
      value_template: "{{
-       states('sensor.luce_sala_potenza') | float
+       states('sensor.luce_ingresso_potenza') | float +
+       states('sensor.luce_sala_potenza') | float +
+       states('sensor.luce_scala_potenza') | float
        }}"
    luci_energia_kwh:
      friendly_name: Illuminazione - Energia KWh
      unit_of_measurement: 'KWh'
      value_template: "{{
-       states('sensor.luce_sala_mensile_f0') | float
+       states('sensor.luce_ingresso_mensile_f0') | float +
+       states('sensor.luce_sala_mensile_f0') | float +
+       states('sensor.luce_scala_mensile_f0') | float
        }}"
+
+#
+# Window Covers
+#
 
 #- platform: mqtt
 #  name: Tapparella Cucina - Potenza

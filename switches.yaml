@@ -1,5 +1,31 @@
 
 - platform: mqtt
+  name: "Luce Terrazzo"
+  availability_topic: "shellies/shelly1-B9DCE0/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shelly1-B9DCE0/relay/0"
+  command_topic: "shellies/shelly1-B9DCE0/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  qos: 0
+  retain: false
+  optimistic: false
+
+- platform: mqtt
+  name: "Luce Ingresso"
+  availability_topic: "shellies/shellyswitch25-693DE8/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitch25-693DE8/relay/0"
+  command_topic: "shellies/shellyswitch25-693DE8/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  qos: 0
+  retain: false
+  optimistic: false
+
+- platform: mqtt
   name: "Luce Sala"
   availability_topic: "shellies/shellyswitch25-68732B/online"
   payload_available: "true"
@@ -11,4 +37,18 @@
   qos: 0
   retain: false
   optimistic: false
+
+- platform: mqtt
+  name: "Luce Scala"
+  availability_topic: "shellies/shellyswitch25-693DE8/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitch25-693DE8/relay/1"
+  command_topic: "shellies/shellyswitch25-693DE8/relay/1/command"
+  payload_on: "on"
+  payload_off: "off"
+  qos: 0
+  retain: false
+  optimistic: false
+
 

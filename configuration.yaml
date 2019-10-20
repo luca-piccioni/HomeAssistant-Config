@@ -38,6 +38,8 @@ http:
   ssl_certificate: !secret http_ssl_certificate
   ssl_key: !secret http_ssl_key
 
+api:
+
 google_assistant:
   project_id: !secret google_project_id
   api_key: !secret google_api_key
@@ -54,6 +56,9 @@ google_assistant:
     light.living_room:
       expose: false
       room: LIVING_ROOM
+
+alexa:
+  smart_home:
 
 media_player:
   - platform: kodi
@@ -83,9 +88,27 @@ device_tracker:
       samsungs4: 192.168.1.56
       lg70: 192.168.1.57
 
+input_number:
+  cover_automatic_close_sunset_offset:
+    name: "Posticipo dal tramonto per chiusura tapparelle"
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+
 utility_meter:
+  luce_ingresso_mensile:
+    source: sensor.luce_ingresso_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
   luce_sala_mensile:
     source: sensor.luce_sala_energia_kwh
+    cycle: monthly
+    tariffs:
+      - F0
+  luce_scala_mensile:
+    source: sensor.luce_scala_energia_kwh
     cycle: monthly
     tariffs:
       - F0
