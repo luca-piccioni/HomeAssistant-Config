@@ -1,0 +1,30 @@
+
+tapparella_cucina_open_time:
+  name: "Apertura Tapparella Cucina"
+  has_date: false
+  has_time: true
+
+tapparella_sala_grande_open_time:
+  name: "Apertura Tapparella Sala (Grande)"
+  has_date: false
+  has_time: true
+
+tapparella_sala_piccola_open_time:
+  name: "Apertura Tapparella Sala (Piccola)"
+  has_date: false
+  has_time: true
+
+tapparella_camera_open_time:
+  name: "Apertura Tapparella Camera"
+  has_date: false
+  has_time: true
+
+tapparella_cameretta_open_time:
+  name: "Apertura Tapparella Cameretta"
+  has_date: false
+  has_time: true
+
+tapparella_bagno_open_time:
+  name: "Apertura Tapparella Bagno"
+  has_date: false
+  has_time: true
