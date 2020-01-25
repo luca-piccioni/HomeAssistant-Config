@@ -26,12 +26,25 @@
   optimistic: false
 
 - platform: mqtt
-  name: "Luce Sala"
+  name: "Luce Sala 1"
   availability_topic: "shellies/shellyswitch25-68732B/online"
   payload_available: "true"
   payload_not_available: "false"
   state_topic: "shellies/shellyswitch25-68732B/relay/0"
   command_topic: "shellies/shellyswitch25-68732B/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  qos: 0
+  retain: false
+  optimistic: false
+
+- platform: mqtt
+  name: "Luce Sala 2"
+  availability_topic: "shellies/shellyswitch25-68732B/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shellyswitch25-68732B/relay/1"
+  command_topic: "shellies/shellyswitch25-68732B/relay/1/command"
   payload_on: "on"
   payload_off: "off"
   qos: 0
@@ -51,4 +64,15 @@
   retain: false
   optimistic: false
 
-
+- platform: mqtt
+  name: "Luce Camera Ospiti"
+  availability_topic: "shellies/shelly1-68B0A9/online"
+  payload_available: "true"
+  payload_not_available: "false"
+  state_topic: "shellies/shelly1-68B0A9/relay/0"
+  command_topic: "shellies/shelly1-68B0A9/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  qos: 0
+  retain: false
+  optimistic: false

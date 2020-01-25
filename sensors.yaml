@@ -1,4 +1,14 @@
 
+- platform: time_date
+  display_options:
+    - 'time'
+    - 'date_time'
+    - 'date_time'
+    - 'date_time_iso'
+    - 'time_date'
+    - 'time_utc'
+    - 'beat'
+
 - platform: cert_expiry
   host: !secret http_hostname
   name: Home Assistant SSL Certificate
@@ -11,6 +21,14 @@
     - pressure
     - rain
 
+#
+# Tasker integration
+#
+
+- platform: mqtt
+  name: tasker_sm_n975f_activity
+  state_topic: "tasker/sm_n975f/activity"
+
 # 
 # Lights
 #
@@ -21,48 +39,50 @@
   unit_of_measurement: "W"
   state_topic: "shellies/shellyswitch25-693DE8/relay/0/power"
 - platform: mqtt
-  name: "Luce Ingresso - Energia Wmin"
+  name: "Luce Ingresso - Energia KWh"
   state_topic: "shellies/shellyswitch25-693DE8/relay/0/energy"
-  unit_of_measurement: "W/min"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 
 - platform: mqtt
-  name: "Luce Sala - Potenza"
+  name: "Luce Sala 1 - Potenza"
   unit_of_measurement: "W"
   state_topic: "shellies/shellyswitch25-68732B/relay/0/power"
 - platform: mqtt
-  name: "Luce Sala - Energia Wmin"
+  name: "Luce Sala 1 - Energia KWh"
   state_topic: "shellies/shellyswitch25-68732B/relay/0/energy"
-  unit_of_measurement: "W/min"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
+
+- platform: mqtt
+  name: "Luce Sala 2 - Potenza"
+  unit_of_measurement: "W"
+  state_topic: "shellies/shellyswitch25-68732B/relay/1/power"
+- platform: mqtt
+  name: "Luce Sala 2 - Energia KWh"
+  state_topic: "shellies/shellyswitch25-68732B/relay/1/energy"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 
 - platform: mqtt
   name: "Luce Scala - Potenza"
   unit_of_measurement: "W"
   state_topic: "shellies/shellyswitch25-693DE8/relay/1/power"
 - platform: mqtt
-  name: "Luce Scala - Energia Wmin"
+  name: "Luce Scala - Energia KWh"
   state_topic: "shellies/shellyswitch25-693DE8/relay/1/energy"
-  unit_of_measurement: "W/min"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 
 - platform: template
   sensors:
-   luce_ingresso_energia_kwh:
-     friendly_name: Luce Ingresso - Energia KWh
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.luce_ingresso_energia_wmin') | float / 60000 }}"
-   luce_sala_energia_kwh:
-     friendly_name: Luce Sala - Energia KWh
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.luce_sala_energia_wmin') | float / 60000 }}"
-   luce_scala_energia_kwh:
-     friendly_name: Luce Scala - Energia KWh
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.luce_scala_energia_wmin') | float / 60000 }}"
    luci_potenza_w:
      friendly_name: Illuminazione - Potenza
      unit_of_measurement: 'W'
      value_template: "{{
        states('sensor.luce_ingresso_potenza') | float +
-       states('sensor.luce_sala_potenza') | float +
+       states('sensor.luce_sala_1_potenza') | float +
+       states('sensor.luce_sala_2_potenza') | float +
        states('sensor.luce_scala_potenza') | float
        }}"
    luci_energia_kwh:
@@ -70,7 +90,8 @@
      unit_of_measurement: 'KWh'
      value_template: "{{
        states('sensor.luce_ingresso_mensile_f0') | float +
-       states('sensor.luce_sala_mensile_f0') | float +
+       states('sensor.luce_sala_1_mensile_f0') | float +
+       states('sensor.luce_sala_2_mensile_f0') | float +
        states('sensor.luce_scala_mensile_f0') | float
        }}"
 
@@ -87,6 +108,13 @@
 #- platform: mqtt
 #  name: Shelly Tapparella Bagno - Temperatura
 #  state_topic: "shellies/shellyswitch25-693395/temperature"
+#- platform: statistics
+#  name: Tapparella Cucina - Temperatura
+#  entity_id: sensor.tapparella_cucina_temperatura
+#  max_age:
+#    minutes: 10
+
+
 #- platform: mqtt
 #  name: Shelly Tapparella Bagno - Surriscaldamento
 #  state_topic: "shellies/shellyswitch25-693395/overtemperature"
@@ -96,130 +124,87 @@
   state_topic: "shellies/shellyswitch25-69310A/roller/0/power"
   unit_of_measurement: "W"
 - platform: mqtt
-  name: Tapparella Cucina - Energia Wmin
+  name: Tapparella Cucina - Energia KWh
   state_topic: "shellies/shellyswitch25-69310A/roller/0/energy"
-  unit_of_measurement: "W/min"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 - platform: mqtt
   name: Tapparella Cucina - Temperatura
   state_topic: "shellies/shellyswitch25-69310A/temperature"
   unit_of_measurement: "°C"
-- platform: statistics
-  name: Tapparella Cucina - Temperatura
-  entity_id: sensor.tapparella_cucina_temperatura
-  max_age:
-    minutes: 10
 
 - platform: mqtt
   name: Tapparella Sala (Grande) - Potenza
   state_topic: "shellies/shellyswitch25-69E5D4/roller/0/power"
   unit_of_measurement: "W"
 - platform: mqtt
-  name: Tapparella Sala (Grande) - Energia Wmin
+  name: Tapparella Sala (Grande) - Energia KWh
   state_topic: "shellies/shellyswitch25-69E5D4/roller/0/energy"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 - platform: mqtt
   name: Tapparella Sala (Grande) - Temperatura
   state_topic: "shellies/shellyswitch25-69E5D4/temperature"
   unit_of_measurement: "°C"
-- platform: statistics
-  name: Tapparella Sala (Grande) - Temperatura
-  entity_id: sensor.tapparella_sala_grande_temperatura
-  max_age:
-    minutes: 10
 
 - platform: mqtt
   name: Tapparella Sala (Piccola) - Potenza
   state_topic: "shellies/shellyswitch25-6940A2/roller/0/power"
   unit_of_measurement: "W"
 - platform: mqtt
-  name: Tapparella Sala (Piccola) - Energia Wmin
+  name: Tapparella Sala (Piccola) - Energia KWh
   state_topic: "shellies/shellyswitch25-6940A2/roller/0/energy"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 - platform: mqtt
   name: Tapparella Sala (Piccola) - Temperatura
   state_topic: "shellies/shellyswitch25-6940A2/temperature"
   unit_of_measurement: "°C"
-- platform: statistics
-  name: Tapparella Sala (Piccola) - Temperatura
-  entity_id: sensor.tapparella_sala_piccola_temperatura
-  max_age:
-    minutes: 10
 
 - platform: mqtt
   name: Tapparella Camera - Potenza
   state_topic: "shellies/shellyswitch25-68F596/roller/0/power"
   unit_of_measurement: "W"
 - platform: mqtt
-  name: Tapparella Camera - Energia Wmin
+  name: Tapparella Camera - Energia KWh
   state_topic: "shellies/shellyswitch25-68F596/roller/0/energy"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 - platform: mqtt
   name: Tapparella Camera - Temperatura
   state_topic: "shellies/shellyswitch25-68F596/temperature"
   unit_of_measurement: "°C"
-- platform: statistics
-  name: Tapparella Camera - Temperatura
-  entity_id: sensor.tapparella_camera_temperatura
-  max_age:
-    minutes: 10
 
 - platform: mqtt
   name: Tapparella Cameretta - Potenza
   state_topic: "shellies/shellyswitch25-69012F/roller/0/power"
   unit_of_measurement: "W"
 - platform: mqtt
-  name: Tapparella Cameretta - Energia Wmin
+  name: Tapparella Cameretta - Energia KWh
   state_topic: "shellies/shellyswitch25-69012F/roller/0/energy"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 - platform: mqtt
   name: Tapparella Cameretta - Temperatura
   state_topic: "shellies/shellyswitch25-69012F/temperature"
   unit_of_measurement: "°C"
-- platform: statistics
-  name: Tapparella Cameretta - Temperatura
-  entity_id: sensor.tapparella_cameretta_temperatura
-  max_age:
-    minutes: 10
 
 - platform: mqtt
   name: Tapparella Bagno - Potenza
   state_topic: "shellies/shellyswitch25-693395/roller/0/power"
   unit_of_measurement: "W"
 - platform: mqtt
-  name: Tapparella Bagno - Energia Wmin
+  name: Tapparella Bagno - Energia KWh
   state_topic: "shellies/shellyswitch25-693395/roller/0/energy"
+  value_template: "{{ value|float / 60000 }}"
+  unit_of_measurement: "KWh"
 - platform: mqtt
   name: Tapparella Bagno - Temperatura
   state_topic: "shellies/shellyswitch25-693395/temperature"
   unit_of_measurement: "°C"
-- platform: statistics
-  name: Tapparella Bagno - Temperatura
-  entity_id: sensor.tapparella_bagno_temperatura
-  max_age:
-    minutes: 10
 
 - platform: template
   sensors:
-   tapparella_cucina_energia_kwh:
-     friendly_name: Tapparella Cucina - Energia
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.tapparella_cucina_energia_wmin') | float / 60000 }}"
-   tapparella_sala_grande_energia_kwh:
-     friendly_name: Tapparella Sala Grande - Energia
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.tapparella_sala_grande_energia_wmin') | float / 60000 }}"
-   tapparella_sala_piccola_energia_kwh:
-     friendly_name: Tapparella Sala Piccola - Energia
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.tapparella_sala_piccola_energia_wmin') | float / 60000 }}"
-   tapparella_camera_energia_kwh:
-     friendly_name: Tapparella Camera - Energia
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.tapparella_camera_energia_wmin') | float / 60000 }}"
-   tapparella_cameretta_energia_kwh:
-     friendly_name: Tapparella Cameretta - Energia
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.tapparella_cameretta_energia_wmin') | float / 60000 }}"
-   tapparella_bagno_energia_kwh:
-     friendly_name: Tapparella Bagno - Energia
-     unit_of_measurement: 'KWh'
-     value_template: "{{ states('sensor.tapparella_bagno_energia_wmin') | float / 60000 }}"
    tapparelle_potenza:
      friendly_name: Tapparelle - Potenza
      unit_of_measurement: 'W'
@@ -241,5 +226,5 @@
        states('sensor.tapparella_camera_mensile_f0') | float +
        states('sensor.tapparella_cameretta_mensile_f0') | float +
        states('sensor.tapparella_bagno_mensile_f0') | float
-       }}"
+     }}"
 

@@ -1,11 +1,28 @@
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
-default_config:
+config:
+discovery:
 frontend:
   javascript_version: lastest
-
-#lovelace:
-#  mode: yaml
+history:
+  include:
+    domains:
+      - light
+    entities:
+      - device_tracker.sm_n975f
+      - device_tracker.e6853
+      - device_tracker.wii
+      - sensor.lumi_lumi_weather_f9d02304_humidity
+      - sensor.lumi_lumi_weather_f9d02304_pressure
+      - sensor.lumi_lumi_weather_f9d02304_temperature
+      - sensor.tasker_sm_n975f_activity
+mobile_app:
+recorder:
+  exclude:
+    entities:
+      - sun.sun
+sun:
+system_health:
 
 # Text to speech
 tts:
@@ -19,16 +36,18 @@ script: !include scripts.yaml
 cover: !include covers.yaml
 switch: !include switches.yaml
 light: !include lights.yaml
+input_datetime: !include input_datetime.yaml
 
 binary_sensor:
   - platform: workday
     country: "IT"
 
 homeassistant:
+  latitude: 45.0
+  longitude: 8.0
+  unit_system: metric
+  time_zone: Europe/Rome
   customize: !include customize.yaml
-  auth_providers:
-    - type: legacy_api_password
-      api_password: !secret http_password
 
 hacs:
   token: !secret github_hacs_token
@@ -44,7 +63,6 @@ google_assistant:
   project_id: !secret google_project_id
   api_key: !secret google_api_key
   exposed_domains:
-    - switch
     - light
     - cover
   entity_config:
@@ -57,14 +75,10 @@ google_assistant:
       expose: false
       room: LIVING_ROOM
 
-alexa:
-  smart_home:
-
 media_player:
   - platform: kodi
     host: 127.0.0.1
 
-owntracks:
 mqtt:
   broker: 127.0.0.1
   username: !secret mosquitto_username
@@ -75,82 +89,99 @@ transmission:
   name: Transmission Deamon
   username: !secret transmission_username
   password: !secret transmission_password
-  turtle_mode: true
 
-device_tracker:
-  - platform: mqtt
-    devices:
-      experiaz5: 'owntracks/homeassistant/xperiaz5'
-  - platform: ping
-    hosts:
-      wii: 192.168.1.6
-      experiaz5: 192.168.1.55
-      samsungs4: 192.168.1.56
-      lg70: 192.168.1.57
+notify:
+  - name: family
+    platform: group
+    services:
+      - service: mobile_app_sm_n975f
+      - service: mobile_app_e6853
 
-input_number:
-  cover_automatic_close_sunset_offset:
-    name: "Posticipo dal tramonto per chiusura tapparelle"
-    min: 0
-    max: 60
-    step: 1
-    mode: box
+# utility_meter:
+#  luce_ingresso_mensile:
+#    source: sensor.luce_ingresso_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
+#  luce_sala_mensile:
+#    source: sensor.luce_sala_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
+#  luce_scala_mensile:
+#    source: sensor.luce_scala_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
+#  tapparella_cucina_mensile:
+#    source: sensor.tapparella_cucina_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
+#  tapparella_sala_grande_mensile:
+#    source: sensor.tapparella_sala_grande_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
+#  tapparella_sala_piccola_mensile:
+#    source: sensor.tapparella_sala_piccola_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
+#  tapparella_camera_mensile:
+#    source: sensor.tapparella_camera_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
+#  tapparella_cameretta_mensile:
+#    source: sensor.tapparella_cameretta_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
+#  tapparella_bagno_mensile:
+#    source: sensor.tapparella_bagno_energia_kwh
+#    cycle: monthly
+#    tariffs:
+#      - F0
 
-utility_meter:
-  luce_ingresso_mensile:
-    source: sensor.luce_ingresso_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
-  luce_sala_mensile:
-    source: sensor.luce_sala_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
-  luce_scala_mensile:
-    source: sensor.luce_scala_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
-  tapparella_cucina_mensile:
-    source: sensor.tapparella_cucina_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
-  tapparella_sala_grande_mensile:
-    source: sensor.tapparella_sala_grande_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
-  tapparella_sala_piccola_mensile:
-    source: sensor.tapparella_sala_piccola_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
-  tapparella_camera_mensile:
-    source: sensor.tapparella_camera_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
-  tapparella_cameretta_mensile:
-    source: sensor.tapparella_cameretta_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
-  tapparella_bagno_mensile:
-    source: sensor.tapparella_bagno_energia_kwh
-    cycle: monthly
-    tariffs:
-      - F0
+garbage_collection:
+  sensors:
+  - name: "Umido"
+    frequency: "weekly"
+    verbose_state: true
+    verbose_format: "{date}, tra {days} giorni"
+    date_format: "%d %B"
+    collection_days:
+    - wed
+    - sat
+  - name: "Plastica"
+    frequency: "even-weeks"
+    verbose_state: true
+    verbose_format: "{date}, tra {days} giorni"
+    date_format: "%d %B"
+    collection_days: "sat"
+  - name: Vetro
+    frequency: "weekly"
+    verbose_state: true
+    verbose_format: "{date}, tra {days} giorni"
+    date_format: "%d %B"
+    collection_days: "wed"
+  - name: Carta
+    frequency: "odd-weeks"
+    verbose_state: true
+    verbose_format: "{date}, tra {days} giorni"
+    date_format: "%d %B"
+    collection_days: "sat"
+  - name: "Indifferenziato"
+    frequency: "weekly"
+    verbose_state: true
+    verbose_format: "{date}, tra {days} giorni"
+    date_format: "%d %B"
+    collection_days: "sat"
 
-history:
-  include:
-    domains:
-      - cover
-      - light
-      - media_player
-      - sensor
-      - switch
+# history:
+#  include:
+#    domains:
 
 # warning, debug
 logger:

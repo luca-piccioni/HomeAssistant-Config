@@ -1,4 +1,8 @@
 
+#
+# Apertura Tapparelle (Tempo/Feriale)
+#
+
 tapparella_cucina_open_time:
   name: "Apertura Tapparella Cucina"
   has_date: false
@@ -26,5 +30,73 @@ tapparella_cameretta_open_time:
 
 tapparella_bagno_open_time:
   name: "Apertura Tapparella Bagno"
+  has_date: false
+  has_time: true
+
+#
+# Apertura Tapparelle (Tempo/Festivo)
+#
+
+tapparella_cucina_open_time_festivo:
+  name: "Apertura Tapparella Cucina"
+  has_date: false
+  has_time: true
+
+tapparella_sala_grande_open_time_festivo:
+  name: "Apertura Tapparella Sala (Grande)"
+  has_date: false
+  has_time: true
+
+tapparella_sala_piccola_open_time_festivo:
+  name: "Apertura Tapparella Sala (Piccola)"
+  has_date: false
+  has_time: true
+
+tapparella_camera_open_time_festivo:
+  name: "Apertura Tapparella Camera"
+  has_date: false
+  has_time: true
+
+tapparella_cameretta_open_time_festivo:
+  name: "Apertura Tapparella Cameretta"
+  has_date: false
+  has_time: true
+
+tapparella_bagno_open_time_festivo:
+  name: "Apertura Tapparella Bagno"
+  has_date: false
+  has_time: true
+
+#
+# Chiusura Tapparelle (Tempo/Feriale)
+#
+
+tapparella_cucina_close_time:
+  name: "Chiusura Tapparella Cucina"
+  has_date: false
+  has_time: true
+
+tapparella_sala_grande_close_time:
+  name: "Chiusura Tapparella Sala (Grande)"
+  has_date: false
+  has_time: true
+
+tapparella_sala_piccola_close_time:
+  name: "Chiusura Tapparella Sala (Piccola)"
+  has_date: false
+  has_time: true
+
+tapparella_camera_close_time:
+  name: "Chiusura Tapparella Camera"
+  has_date: false
+  has_time: true
+
+tapparella_cameretta_close_time:
+  name: "Chiusura Tapparella Cameretta"
+  has_date: false
+  has_time: true
+
+tapparella_bagno_close_time:
+  name: "Chiusura Tapparella Bagno"
   has_date: false
   has_time: true

@@ -1,31 +1,5 @@
 
-# Media volumes
-
-- alias: 'Nominal Google Home'
-  trigger:
-     platform: time
-     at: "07:30:00"
-  action:
-    service: media_player.volume_set
-    data:
-      volume_level: 0.6
-      entity_id:
-        - media_player.home
-
-- alias: 'Silent Google Home At Night'
-  trigger:
-     platform: time
-     at: "21:00:00"
-  action:
-    service: media_player.volume_set
-    data:
-      volume_level: 0.3
-      entity_id:
-        - media_player.home
-
-# Covers
-
-# Updates states after restart
+# Updates Sheely MQTT states after restart
 - alias: 'Sheelies Synch at HA startup'
   trigger:
   - platform: homeassistant
@@ -37,37 +11,426 @@
       topic: shellies/command
       payload: announce
 
-# Open little before wake up
-- alias: 'Tapparelle Automatiche (Mattina Feriale)'
+
+# Media volumes
+#
+
+- alias: 'Nominal Google Home'
   trigger:
-    - platform: time
-      at: '07:12:30'
+     platform: time
+     at: "07:30:00"
+  action:
+    service: media_player.volume_set
+    data:
+      volume_level: 0.6
+      entity_id:
+        - media_player.home
+- alias: 'Silent Google Home At Night'
+  trigger:
+     platform: time
+     at: "21:00:00"
+  action:
+    service: media_player.volume_set
+    data:
+      volume_level: 0.3
+      entity_id:
+        - media_player.home
+
+# Lights
+#
+
+- alias: 'Luce scala (Auto off)'
+  trigger:
+    platform: state
+    entity_id: light.scala
+    to: 'on'
+    for:
+      minutes: 1
+  action:
+    - service: light.turn_off
+      entity_id: light.scala
+
+# Covers
+
+#
+# Apertura Tapparelle (Tempo/Feriale)
+#
+
+- alias: 'Tapparella Cucina (Apertura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cucina_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+   - condition: state
+     entity_id: 'binary_sensor.workday_sensor'
+     state: 'on'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_cucina
+
+- alias: 'Tapparella Sala (Grande) (Apertura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_grande_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_d2e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_sala_grande
+
+- alias: 'Tapparella Sala (Piccola) (Apertura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_piccola_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_d2e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_sala_piccola
+
+- alias: 'Tapparella Camera (Apertura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_camera_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_e3e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_camera
+
+- alias: 'Tapparella Cameretta (Apertura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cameretta_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
   condition:
     - condition: state
       entity_id: 'binary_sensor.workday_sensor'
       state: 'on'
   action:
-    - service: cover.open_cover
-      entity_id: cover.tapparella_bagno
-    - service: cover.open_cover
-      entity_id: cover.tapparella_cucina
+    service: cover.open_cover
+    entity_id: cover.tapparella_cameretta
 
-# Close after sunset
-- alias: 'Tapparelle Automatiche (Notte)'
+- alias: 'Tapparella Bagno (Apertura Feriale)'
   trigger:
-    - platform: sun
-      event: sunset
-      offset: '00:25:00'
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_bagno_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
   action:
-    - service: cover.close_cover
-      entity_id: cover.tapparella_bagno
-    - service: cover.close_cover
-      entity_id: cover.tapparella_cucina
-    - service: cover.close_cover
-      entity_id: cover.tapparella_camera
-    - service: cover.close_cover
-      entity_id: cover.tapparella_cameretta
-    - service: cover.close_cover
-      entity_id: cover.tapparella_sala_grande
-    - service: cover.close_cover
-      entity_id: cover.tapparella_sala_piccola
+    service: cover.open_cover
+    entity_id: cover.tapparella_bagno
+
+#
+# Apertura Tapparelle (Tempo/Festivo)
+#
+
+- alias: 'Tapparella Cucina (Apertura Festiva)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cucina_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+   - condition: state
+     entity_id: 'binary_sensor.workday_sensor'
+     state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_cucina
+
+- alias: 'Tapparella Sala (Grande) (Apertura Festiva)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_grande_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'off'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_d2e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_sala_grande
+
+- alias: 'Tapparella Sala (Piccola) (Apertura Festiva)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_piccola_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'off'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_d2e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_sala_piccola
+
+- alias: 'Tapparella Camera (Apertura Festiva)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_camera_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'off'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_e3e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_camera
+
+- alias: 'Tapparella Cameretta (Apertura Festiva)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cameretta_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_cameretta
+
+- alias: 'Tapparella Bagno (Apertura Festiva)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_bagno_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'off'
+  action:
+    service: cover.open_cover
+    entity_id: cover.tapparella_bagno
+
+#
+# Chiusura Tapparelle (Tempo)
+#
+
+- alias: 'Tapparella Cucina (Chiusura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cucina_close_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+   - condition: state
+     entity_id: 'binary_sensor.workday_sensor'
+     state: 'on'
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_cucina
+
+- alias: 'Tapparella Sala (Grande) (Chiusura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_grande_close_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_d2e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_sala_grande
+
+- alias: 'Tapparella Sala (Piccola) (Chiusura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_piccola_close_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_d2e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_sala_piccola
+
+- alias: 'Tapparella Camera (Chiusura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_camera_close_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_e3e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_camera
+
+- alias: 'Tapparella Cameretta (Chiusura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cameretta_close_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_cameretta
+
+- alias: 'Tapparella Bagno (Chiusura Feriale)'
+  trigger:
+    - platform: template
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_bagno_close_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.workday_sensor'
+      state: 'on'
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_bagno
+
+
+#
+# Tapparelle (Chiusura Tramonto)
+#
+
+- alias: 'Tapparella Cucina (Chiusura Tramonto)'
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -6.0
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_cucina
+
+- alias: 'Tapparella Sala (Grande) (Chiusura Tramonto)'
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -6.0
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_d2e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_sala_grande
+
+- alias: 'Tapparella Sala (Piccola) (Chiusura Tramonto)'
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -6.0
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_sala_piccola
+
+- alias: 'Tapparella Camera (Chiusura Tramonto)'
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -6.0
+  condition:
+    - condition: state
+      entity_id: 'binary_sensor.lumi_lumi_sensor_magnet_aq2_e3e10b04_on_off'
+      state: 'off'
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_camera
+
+- alias: 'Tapparella Cameretta (Chiusura Tramonto)'
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -6.0
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_cameretta
+
+- alias: 'Tapparella Bagno (Chiusura Tramonto)'
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -6.0
+  action:
+    service: cover.close_cover
+    entity_id: cover.tapparella_bagno
+
+# Alert before closing covers
+- alias: "Preavviso Tapparelle Automatiche (Notte)"
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      value_template: "{{ state.attributes.elevation }}"
+      below: -5.99
+  condition:
+    - condition: state
+      entity_id: 'automation.tapparelle_automatiche_notte'
+      state: 'on'
+  action:
+    - service: tts.google_say
+      entity_id: media_player.home
+      data:
+        message: "Le tapparelle si chiuderanno tra poco."
+        language: 'it'
+
+#
+# Garbage collection
+#
+
+- alias: "Notifica Raccolta Differenziata"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.umido
+      value_template: "{{ state.attributes.days  }}"
+      below: 1
+    - platform: numeric_state
+      entity_id: sensor.plastica
+      value_template: "{{ state.attributes.days  }}"
+      below: 1
+    - platform: numeric_state
+      entity_id: sensor.carta
+      value_template: "{{ state.attributes.days  }}"
+      below: 1
+    - platform: numeric_state
+      entity_id: sensor.carta
+      value_template: "{{ state.attributes.days  }}"
+      below: 1
+    - platform: numeric_state
+      entity_id: sensor.vetro
+      value_template: "{{ state.attributes.days  }}"
+      below: 1
+    - platform: numeric_state
+      entity_id: sensor.indifferenziato
+      value_template: "{{ state.attributes.days  }}"
+      below: 1
+  condition: []
+  action:
+    service: notify.family
+    data:
+      title: "Raccolta differenziata"
+      message: "Domani raccolta differenziata: {{ trigger.to_state.attributes.friendly_name }}."

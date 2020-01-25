@@ -1,16 +1,30 @@
 
 - platform: switch
-  name: "Luce Terrazzo"
+  name: "Terrazzo"
   entity_id: switch.luce_terrazzo
 
 - platform: switch
-  name: "Luce Ingresso"
+  name: "Ingresso"
   entity_id: switch.luce_ingresso
 
 - platform: switch
-  name: "Luce Sala"
-  entity_id: switch.luce_sala
+  name: "Sala 1"
+  entity_id: switch.luce_sala_1
 
 - platform: switch
-  name: "Luce Scala"
+  name: "Sala 2"
+  entity_id: switch.luce_sala_2
+
+- platform: switch
+  name: "Scala"
   entity_id: switch.luce_scala
+
+- platform: switch
+  name: "Camera Ospiti"
+  entity_id: switch.luce_camera_ospiti
+
+- platform: group
+  name: "Sala"
+  entities:
+    - light.sala_1
+    - light.sala_2
