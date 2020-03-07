@@ -12,30 +12,6 @@
       payload: announce
 
 
-# Media volumes
-#
-
-- alias: 'Nominal Google Home'
-  trigger:
-     platform: time
-     at: "07:30:00"
-  action:
-    service: media_player.volume_set
-    data:
-      volume_level: 0.6
-      entity_id:
-        - media_player.home
-- alias: 'Silent Google Home At Night'
-  trigger:
-     platform: time
-     at: "21:00:00"
-  action:
-    service: media_player.volume_set
-    data:
-      volume_level: 0.3
-      entity_id:
-        - media_player.home
-
 # Lights
 #
 
@@ -144,7 +120,7 @@
 - alias: 'Tapparella Cucina (Apertura Festiva)'
   trigger:
     - platform: template
-      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cucina_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cucina_open_time_festivo', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
   condition:
    - condition: state
      entity_id: 'binary_sensor.workday_sensor'
@@ -156,7 +132,7 @@
 - alias: 'Tapparella Sala (Grande) (Apertura Festiva)'
   trigger:
     - platform: template
-      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_grande_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_grande_open_time_festivo', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
   condition:
     - condition: state
       entity_id: 'binary_sensor.workday_sensor'
@@ -171,7 +147,7 @@
 - alias: 'Tapparella Sala (Piccola) (Apertura Festiva)'
   trigger:
     - platform: template
-      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_piccola_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_sala_piccola_open_time_festivo', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
   condition:
     - condition: state
       entity_id: 'binary_sensor.workday_sensor'
@@ -186,7 +162,7 @@
 - alias: 'Tapparella Camera (Apertura Festiva)'
   trigger:
     - platform: template
-      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_camera_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_camera_open_time_festivo', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
   condition:
     - condition: state
       entity_id: 'binary_sensor.workday_sensor'
@@ -201,7 +177,7 @@
 - alias: 'Tapparella Cameretta (Apertura Festiva)'
   trigger:
     - platform: template
-      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cameretta_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_cameretta_open_time_festivo', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
   condition:
     - condition: state
       entity_id: 'binary_sensor.workday_sensor'
@@ -213,7 +189,7 @@
 - alias: 'Tapparella Bagno (Apertura Festiva)'
   trigger:
     - platform: template
-      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_bagno_open_time', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
+      value_template: "{{ states('sensor.time') == (state_attr('input_datetime.tapparella_bagno_open_time_festivo', 'timestamp') | int | timestamp_custom('%H:%M', False))  }}"
   condition:
     - condition: state
       entity_id: 'binary_sensor.workday_sensor'
@@ -398,6 +374,9 @@
         message: "Le tapparelle si chiuderanno tra poco."
         language: 'it'
 
+# Do not completly close covers during hot days TODO
+# Trim covers during hot days
+
 #
 # Garbage collection
 #
@@ -428,9 +407,8 @@
       entity_id: sensor.indifferenziato
       value_template: "{{ state.attributes.days  }}"
       below: 1
-  condition: []
   action:
-    service: notify.family
+    service: notify.mobile_app_sm_n975f
     data:
       title: "Raccolta differenziata"
       message: "Domani raccolta differenziata: {{ trigger.to_state.attributes.friendly_name }}."

@@ -37,6 +37,7 @@ cover: !include covers.yaml
 switch: !include switches.yaml
 light: !include lights.yaml
 input_datetime: !include input_datetime.yaml
+scene: !include scenes.yaml
 
 binary_sensor:
   - platform: workday
@@ -48,6 +49,7 @@ homeassistant:
   unit_system: metric
   time_zone: Europe/Rome
   customize: !include customize.yaml
+  packages: !include_dir_named packages
 
 hacs:
   token: !secret github_hacs_token
@@ -65,15 +67,7 @@ google_assistant:
   exposed_domains:
     - light
     - cover
-  entity_config:
-    switch.kitchen:
-      name: CUSTOM_NAME_FOR_GOOGLE_ASSISTANT
-      aliases:
-        - BRIGHT_LIGHTS
-        - ENTRY_LIGHTS
-    light.living_room:
-      expose: false
-      room: LIVING_ROOM
+    - sensor
 
 media_player:
   - platform: kodi
